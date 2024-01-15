@@ -63,3 +63,5 @@ class test_new_console_feature(unittest.TestCase):
         cmd.do_create('State name=5.5.3')
         self.assertEqual(len(storage.all()), 2)
         self.assertEqual(list(storage.all().values())[1].name, "")
+        helpers.stdout(lambda: cmd.do_create(
+            'Stated name=5.5.3'), "** class doesn't exist **\n")
