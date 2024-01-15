@@ -127,8 +127,8 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[class_name]()
         for attribute in attributes:
             name, value = attribute.split("=")
-            if value.startswith("\""):
-                value = value.replace("\"", "").replace("_", " ")
+            if value.startswith('"'):
+                value = value.strip('"').replace("_", " ")
             elif value.count(".") == 1 \
                     and value.split(".")[0].isdigit() \
                     and value.split(".")[1].isdigit():
