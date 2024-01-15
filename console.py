@@ -133,10 +133,8 @@ class HBNBCommand(cmd.Cmd):
                     and value.split(".")[0].isdigit() \
                     and value.split(".")[1].isdigit():
                 value = float(value)
-            elif value.isdigit():
-                value = int(value)
             else:
-                continue
+                value = int(value)
             setattr(new_instance, name, value)
         storage.save()
         print(new_instance.id)
