@@ -115,40 +115,30 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        pattern = """(^\w+)((?:\s+\w+=[^\s]+)+)?"""
-        m = re.match(pattern, args)
-        args = [s for s in m.groups() if s] if m else []
-
         if not args:
             print("** class name missing **")
             return
-
-        className = args[0]
-
-        if className not in HBNBCommand.classes:
+        arguments = args.split()
+        class_name = arguments.pop(0)
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-
-        kwargs = dict()
-        if len(args) > 1:
-            params = args[1].split(" ")
-            params = [param for param in params if param]
-            for param in params:
-                [name, value] = param.split("=")
-                if value[0] == '"' and value[-1] == '"':
-                    value = value[1:-1].replace('_', ' ')
-                elif '.' in value:
-                    value = float(value)
-                else:
-                    value = int(value)
-                kwargs[name] = value
-
-        new_instance = HBNBCommand.classes[className]()
-
-        for attrName, attrValue in kwargs.items():
-            setattr(new_instance, attrName, attrValue)
-
-        new_instance.save()
+        attributes = arguments
+        new_instance = HBNBCommand.classes[class_name]()
+        for attribute in attributes:
+            name, value = attribute.split("=")
+            if value.startswith('"'):
+                value = value.strip('"').replace("_", " ")
+            elif value.count(".") == 1 \
+                    and value.split(".")[0].isdigit() \
+                    and value.split(".")[1].isdigit():
+                value = float(value)
+            elif value.isdigit():
+                value = int(value)
+            else:
+                continue
+            setattr(new_instance, name, value)
+        storage.save()
         print(new_instance.id)
 
     def help_create(self):
