@@ -127,14 +127,12 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[class_name]()
         for attribute in attributes:
             if '=' in attribute:
-                attribute = attribute.replace(' ', '')
-                print(attribute)
                 name, value = attribute.split("=")
                 if value.startswith('"'):
                     value = value.strip('"').replace("_", " ")
                 elif value.count(".") == 1 \
-                        and value.split(".")[0].isdigit() \
-                        and value.split(".")[1].isdigit():
+                        and is_digit(value.split(".")[0]) \
+                        and is_digit(value.split(".")[1]):
                     value = float(value)
                 else:
                     value = int(value)
@@ -336,6 +334,18 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+def is_digit(num):
+    """
+    is digit to check if digit and negative number
+    """
+    if not num:
+        return False
+    if num[0] == '-':
+        num = num[1:]
+
+    return num.isdigit()
+
 
 
 if __name__ == "__main__":
