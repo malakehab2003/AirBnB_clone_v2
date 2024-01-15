@@ -11,6 +11,8 @@ class FileStorage:
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
         if cls is not None:
+            if type(cls) != str:
+                cls = cls.__name__
             objects = dict(filter(lambda i: i[0].startswith(
                 cls), FileStorage.__objects.items()))
             return objects
