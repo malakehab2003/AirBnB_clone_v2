@@ -126,16 +126,17 @@ class HBNBCommand(cmd.Cmd):
         attributes = arguments
         new_instance = HBNBCommand.classes[class_name]()
         for attribute in attributes:
-            name, value = attribute.split("=")
-            if value.startswith('"'):
-                value = value.strip('"').replace("_", " ")
-            elif value.count(".") == 1 \
-                    and value.split(".")[0].isdigit() \
-                    and value.split(".")[1].isdigit():
-                value = float(value)
-            else:
-                value = int(value)
-            setattr(new_instance, name, value)
+            if '=' in attribute:
+                name, value = attribute.split("=")
+                if value.startswith('"'):
+                    value = value.strip('"').replace("_", " ")
+                elif value.count(".") == 1 \
+                        and value.split(".")[0].isdigit() \
+                        and value.split(".")[1].isdigit():
+                    value = float(value)
+                else:
+                    value = int(value)
+                setattr(new_instance, name, value)
         storage.save()
         print(new_instance.id)
 
