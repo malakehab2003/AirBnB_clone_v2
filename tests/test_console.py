@@ -72,3 +72,14 @@ class test_new_console_feature(unittest.TestCase):
         self.assertEqual(list(storage.all().values())[0].name, 5.53)
         helpers.stdout(lambda: cmd.do_create(
             'Stated name=5.5.3'), "** class doesn't exist **\n")
+
+    def test_no_equal(self):
+        """
+        test no equal in parameters
+        """
+        cmd = HBNBCommand()
+        helpers = Helpers()
+        cmd.do_create('State name:state')
+        cmd.do_all("State")
+        self.assertEqual(len(storage.all()), 1)
+        self.assertNotEqual(list(storage.all().values())[0].name, "state")
