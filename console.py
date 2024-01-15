@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
         for attribute in attributes:
             name, value = attribute.split("=")
             if value.startswith('"'):
-                value = value.strip('"').replace("_", " ")
+                value = value[1:-1].replace("_", " ")
             elif value.count(".") == 1 \
                     and value.split(".")[0].isdigit() \
                     and value.split(".")[1].isdigit():
@@ -140,7 +140,6 @@ class HBNBCommand(cmd.Cmd):
             setattr(new_instance, name, value)
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
