@@ -127,6 +127,8 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[class_name]()
         for attribute in attributes:
             if '=' in attribute:
+                attribute = attribute.replace(' ', '')
+                print(attribute)
                 name, value = attribute.split("=")
                 if value.startswith('"'):
                     value = value.strip('"').replace("_", " ")
