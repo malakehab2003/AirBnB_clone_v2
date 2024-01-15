@@ -63,7 +63,6 @@ class FileStorage:
         """
         if obj is not None:
             obj_key = type(obj).__name__+"."+obj.id
-            print(f"obj_key = {obj_key}")
             if list(FileStorage.__objects.keys()).count(obj_key) != 0:
                 FileStorage.__objects.pop(obj_key)
                 self.save()
