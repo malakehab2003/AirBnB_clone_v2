@@ -55,8 +55,10 @@ class test_new_console_feature(unittest.TestCase):
         helpers = Helpers()
         cmd.do_create('State name="California"')
         self.assertEqual(len(storage.all()), 1)
-        cmd.do_create('State name="California"')
+        cmd.do_create('State name="California_Store"')
         self.assertEqual(len(storage.all()), 2)
+        self.assertEqual(list(storage.all().values())
+                         [1].name, "California Store")
 
     def test_wrong_creation(self):
         """

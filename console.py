@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
         for attribute in attributes:
             name, value = attribute.split("=")
             if value.startswith("\""):
-                value = str(value).replace("_", " ")
+                value = value.replace("\"", "").replace("_", " ")
             elif value.count(".") == 1 \
                     and value.split(".")[0].isdigit() \
                     and value.split(".")[1].isdigit():
