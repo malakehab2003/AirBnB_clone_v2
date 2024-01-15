@@ -66,9 +66,9 @@ class test_new_console_feature(unittest.TestCase):
         """
         cmd = HBNBCommand()
         helpers = Helpers()
-        cmd.do_create('State name=5.5.3')
+        cmd.do_create('State name=5.53')
         cmd.do_all("State")
         self.assertEqual(len(storage.all()), 1)
-        self.assertEqual(list(storage.all().values())[0].name, "")
+        self.assertEqual(list(storage.all().values())[0].name, 5.53)
         helpers.stdout(lambda: cmd.do_create(
             'Stated name=5.5.3'), "** class doesn't exist **\n")
