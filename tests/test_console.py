@@ -33,6 +33,7 @@ class test_new_console_feature(unittest.TestCase):
         """
         try:
             os.remove('file.json')
+            storage.clear()
         except:
             pass
 
@@ -42,6 +43,7 @@ class test_new_console_feature(unittest.TestCase):
         """
         try:
             os.remove('file.json')
+            storage.clear()
         except:
             pass
 
@@ -53,6 +55,8 @@ class test_new_console_feature(unittest.TestCase):
         helpers = Helpers()
         cmd.do_create('State name="California"')
         self.assertEqual(len(storage.all()), 1)
+        cmd.do_create('State name="California"')
+        self.assertEqual(len(storage.all()), 2)
 
     def test_wrong_creation(self):
         """
@@ -61,7 +65,8 @@ class test_new_console_feature(unittest.TestCase):
         cmd = HBNBCommand()
         helpers = Helpers()
         cmd.do_create('State name=5.5.3')
-        self.assertEqual(len(storage.all()), 2)
-        self.assertEqual(list(storage.all().values())[1].name, "")
+        cmd.do_all("State")
+        self.assertEqual(len(storage.all()), 1)
+        self.assertEqual(list(storage.all().values())[0].name, "")
         helpers.stdout(lambda: cmd.do_create(
             'Stated name=5.5.3'), "** class doesn't exist **\n")
