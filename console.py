@@ -115,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-         pattern = """(^\w+)((?:\s+\w+=[^\s]+)+)?"""
+        pattern = """(^\w+)((?:\s+\w+=[^\s]+)+)?"""
         m = re.match(pattern, args)
         args = [s for s in m.groups() if s] if m else []
 
@@ -144,9 +144,9 @@ class HBNBCommand(cmd.Cmd):
                 kwargs[name] = value
 
         new_instance = HBNBCommand.classes[className]()
-        
+
         for attrName, attrValue in kwargs.items():
-            setattr(new_instance, attrName, attrValue) 
+            setattr(new_instance, attrName, attrValue)
 
         new_instance.save()
         print(new_instance.id)
