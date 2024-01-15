@@ -31,8 +31,18 @@ class test_new_console_feature(unittest.TestCase):
         """
         clear file.json
         """
-        if os.path.exists("file.json"):
-            # os.remove("file.json")
+        try:
+            os.remove('file.json')
+        except:
+            pass
+
+    def tearDown(self):
+        """
+        clear file.json
+        """
+        try:
+            os.remove('file.json')
+        except:
             pass
 
     def test_creation(self):
@@ -43,3 +53,13 @@ class test_new_console_feature(unittest.TestCase):
         helpers = Helpers()
         cmd.do_create('State name="California"')
         self.assertEqual(len(storage.all()), 1)
+
+    def test_wrong_creation(self):
+        """
+        test wrong param
+        """
+        cmd = HBNBCommand()
+        helpers = Helpers()
+        cmd.do_create('State name=5.5.3')
+        self.assertEqual(len(storage.all()), 2)
+        self.assertEqual(list(storage.all().values())[1].name, "")
