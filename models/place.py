@@ -20,3 +20,19 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer(), nullable=False, default=0)
     latitude = Column(Float())
     longitude = Column(Float())
+    reviews = relationship("Review", cascade="delete", back_populates="place")
+
+    @property
+    def reviews(self):
+        """
+        for FileStorage: getter attribute reviews
+        """
+        from models import storage
+        from models.review import Review
+        cities = list(
+            map(lambda i: i[0],
+                filter(lambda i: i.place_id ==
+                       self.id, storage.all(Review).items())
+                )
+        )
+        return cities
