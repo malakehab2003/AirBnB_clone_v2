@@ -41,6 +41,8 @@ class DBStorage:
         query on the current database session
         """
         if cls is not None:
+            if type(cls) is not str:
+                cls = cls.__name__
             rows = self.__session.query(self.classes[cls]).all()
         else:
             rows = []

@@ -21,7 +21,7 @@ class State(BaseModel, Base):
         cities = list(
             map(lambda i: i[0],
                 filter(lambda i: i.state_id ==
-                       self.id, storage.all(City).items())
+                       self.id, storage.all(City).values())
                 )
         )
         return cities
