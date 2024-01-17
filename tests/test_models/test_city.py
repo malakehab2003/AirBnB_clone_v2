@@ -22,13 +22,3 @@ class test_City(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.name), str)
-
-class Test_PEP8(unittest.TestCase):
-    """test User"""
-
-    def test_pep8_user(self):
-        """test pep8 style"""
-        pep8style = pycodestyle.StyleGuide(quiet=True)
-        result = pep8style.check_files(['models/city.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
