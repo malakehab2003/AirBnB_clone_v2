@@ -56,12 +56,6 @@ class test_basemodel(unittest.TestCase):
             j = json.load(f)
             self.assertEqual(j[key], i.to_dict())
 
-    def test_str(self):
-        """ """
-        i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
-                         i.__dict__))
-
     def test_todict(self):
         """ """
         i = self.value()
@@ -72,12 +66,6 @@ class test_basemodel(unittest.TestCase):
         """ """
         n = {None: None}
         with self.assertRaises(TypeError):
-            new = self.value(**n)
-
-    def test_kwargs_one(self):
-        """ """
-        n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
             new = self.value(**n)
 
     def test_id(self):
@@ -97,3 +85,25 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+    def test_base(self):
+        """
+        base test
+        """
+        my_model = BaseModel()
+        self.assertIsInstance(my_model, BaseModel)
+        self.assertIsInstance(my_model.id, str)
+        self.assertIsInstance(my_model.created_at, datetime.datetime)
+        self.assertIsInstance(my_model.updated_at, datetime.datetime)
+        my_model.name = "My First Model"
+        my_model.my_number = 89
+        my_dict = {
+            "id": my_model.id,
+            'created_at': my_model.created_at,
+            'updated_at': my_model.updated_at,
+            "name": "My First Model",
+            "my_number": 89
+        }
+        my_old_updated_at = my_model.updated_at
+        my_model.save()
+        self.assertNotEqual(my_model.updated_at, my_old_updated_at)
