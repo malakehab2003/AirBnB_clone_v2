@@ -72,7 +72,7 @@ class Place(BaseModel, Base):
             """
             from models.amenity import Amenity
             print("appending")
-            if type(amenity) == Amenity:
+            if type(amenity) is Amenity:
                 self.amenity_ids.append(amenity.id)
 
     amenity_ids = []

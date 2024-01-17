@@ -144,7 +144,8 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the create method """
         print("Creates a class of any type")
         print(
-            "[Usage]: create <className> <key name1>=<value1> <key name2>=<value2> ...\n")
+            "[Usage]: create <className> \
+            <key name1>=<value1> <key name2>=<value2> ...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
