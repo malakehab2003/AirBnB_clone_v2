@@ -24,6 +24,7 @@ class DBStorage:
     }
 
     def __init__(self):
+        """ overriting the constructor"""
         user = os.environ.get("HBNB_MYSQL_USER")
         password = os.environ.get("HBNB_MYSQL_PWD")
         host = os.environ.get("HBNB_MYSQL_HOST")
