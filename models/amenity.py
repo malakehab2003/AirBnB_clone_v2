@@ -12,7 +12,9 @@ class Amenity(BaseModel, Base):
     amenity table
     """
     __tablename__ = "amenities"
-    name = Column(String(128), nullable=False)
+    name = Column(String(128), nullable=False)\
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ""
     place_amenities = relationship(
-        "Place", secondary=place_amenity, viewonly=False, back_populates="amenities") \
+        "Place", secondary=place_amenity, viewonly=False,
+        back_populates="amenities") \
         if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
