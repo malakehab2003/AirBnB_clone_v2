@@ -2,6 +2,7 @@
 """A unit test module for the console (command interpreter).
 """
 import json
+from helpers.test_helpers import Helpers
 import MySQLdb
 import os
 import sqlalchemy
@@ -12,6 +13,75 @@ from console import HBNBCommand
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
+
+
+class test_new_console_feature(unittest.TestCase):
+    """
+    test Feature
+    """
+
+    def setUp(self):
+        """
+        clear file.json
+        """
+        try:
+            os.remove('file.json')
+            storage.clear()
+        except:
+            pass
+
+    def tearDown(self):
+        """
+        clear file.json
+        """
+        try:
+            os.remove('file.json')
+            storage.clear()
+        except:
+            pass
+
+    def test_creation(self):
+        """
+        test feature
+        """
+        cmd = HBNBCommand()
+        helpers = Helpers()
+        cmd.do_create('State name="California"')
+        self.assertEqual(len(storage.all()), 1)
+        cmd.do_create('State name="California_Store"')
+        self.assertEqual(len(storage.all()), 2)
+        self.assertEqual(list(storage.all().values())
+                         [1].name, "California Store")
+
+    def test_wrong_creation(self):
+        """
+        test wrong param
+        """
+        cmd = HBNBCommand()
+        helpers = Helpers()
+        cmd.do_create('State name=5.53')
+        self.assertEqual(list(storage.all().values())[0].name, 5.53)
+
+    def test_no_equal(self):
+        """
+        test no equal in parameters
+        """
+        cmd = HBNBCommand()
+        helpers = Helpers()
+        cmd.do_create('State name:state')
+        self.assertEqual(len(storage.all()), 1)
+        self.assertNotEqual(list(storage.all().values())[0].name, "state")
+
+    def test_numbers(self):
+        """
+        test numbers
+        """
+        cmd = HBNBCommand()
+        helpers = Helpers()
+        cmd.do_create('State no=2 no2=2.5')
+        self.assertEqual(len(storage.all()), 1)
+        self.assertEqual(list(storage.all().values())[0].no, 2)
+        self.assertEqual(list(storage.all().values())[0].no2, 2.5)
 
 
 class TestHBNBCommand(unittest.TestCase):
