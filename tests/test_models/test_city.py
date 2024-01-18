@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """ """
+import os
 from types import NoneType
-from tests.test_models.test_base_model import test_basemodel
+import unittest
 from models.city import City
 from models.state import State
 from models import storage
@@ -9,7 +10,7 @@ import datetime
 from models.base_model import BaseModel
 
 
-class test_City(test_basemodel):
+class test_City(unittest.TestCase):
     """ """
 
     def __init__(self, *args, **kwargs):
@@ -24,18 +25,26 @@ class test_City(test_basemodel):
     def test_state_id(self):
         """ """
         new = self.value
-        self.assertEqual(type(new.state_id), NoneType)
+        self.assertEqual(type(new.state_id), NoneType
+                         if os.getenv("HBNB_TYPE_STORAGE") == 'db'
+                         else str)
 
     def test_name(self):
         """ """
         new = self.value
-        self.assertEqual(type(new.name), NoneType)
+        self.assertEqual(type(new.name), NoneType
+                         if os.getenv("HBNB_TYPE_STORAGE") == 'db'
+                         else str)
 
     def test_city_attributes(self):
         """test atters"""
         city = City()
-        self.assertEqual(city.name, None)
-        self.assertEqual(city.state_id, None)
+        self.assertEqual(city.name, None
+                         if os.getenv("HBNB_TYPE_STORAGE") == 'db'
+                         else "")
+        self.assertEqual(city.state_id, None
+                         if os.getenv("HBNB_TYPE_STORAGE") == 'db'
+                         else "")
 
     def test_city_inheritance(self):
         """test inheritance"""

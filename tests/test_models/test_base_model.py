@@ -48,6 +48,7 @@ class test_basemodel(unittest.TestCase):
         key = self.name + "." + i.id
         with open('file.json', 'r') as f:
             j = json.load(f)
+            self.assertEqual(self.name, "BaseModel")
             self.assertEqual(j[key], i.to_dict())
 
     def test_todict(self):
