@@ -73,15 +73,22 @@ class TestHBNBCommand(unittest.TestCase):
             # showing a User instance
             obj = User(email="john25@gmail.com", password="123")
             helpers = Helpers()
-            # cursor.execute('SELECT * FROM users WHERE id="{}"'.format(obj.id))
-            # result = cursor.fetchone()
-            # self.assertTrue(result is None)
-            # self.cons.onecmd('show User {}'.format(obj.id))
-            # self.assertEqual(
-            #     cout.getvalue().strip(),
-            #     '** no instance found **'
-            # )
-            # cursor = dbc.cursor()
+            dbc = MySQLdb.connect(
+                host=os.getenv('HBNB_MYSQL_HOST'),
+                port=3306,
+                user=os.getenv('HBNB_MYSQL_USER'),
+                passwd=os.getenv('HBNB_MYSQL_PWD'),
+                db=os.getenv('HBNB_MYSQL_DB')
+            )
+            cursor = dbc.cursor()
+            cursor.execute('SELECT * FROM users WHERE id="{}"'.format(obj.id))
+            result = cursor.fetchone()
+            self.assertTrue(result is None)
+            self.cons.onecmd('show User {}'.format(obj.id))
+            self.assertEqual(
+                cout.getvalue().strip(),
+                '** no instance found **'
+            )
             obj.save()
             dbc = MySQLdb.connect(
                 host=os.getenv('HBNB_MYSQL_HOST'),
@@ -98,7 +105,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertIn('123', result)
             storage.reload()
             self.cons.onecmd('show User {}'.format(obj.id))
-            printed_result = cout.getvalue().splitlines()[0]
+            printed_result = cout.getvalue().splitlines()[1]
             self.assertIn('john25@gmail.com', printed_result)
             self.assertIn('123', printed_result)
             cursor.close()

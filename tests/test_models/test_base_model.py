@@ -21,7 +21,7 @@ class test_basemodel(unittest.TestCase):
         """test"""
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
 
     def test_kwargs(self):
@@ -39,7 +39,8 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "FileStorage Test")
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                     "FileStorage Test")
     def test_save(self):
         """ Testing save """
         i = self.value
@@ -78,7 +79,8 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "FileStorage Test")
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                     "FileStorage Test")
     def test_base(self):
         """
         base test
