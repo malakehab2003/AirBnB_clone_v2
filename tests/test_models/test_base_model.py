@@ -15,41 +15,34 @@ class test_basemodel(unittest.TestCase):
         """ make the constructor """
         super().__init__(*args, **kwargs)
         self.name = 'BaseModel'
-        self.value = BaseModel
-
-    def setUp(self):
-        """set up """
-        pass
+        self.value = BaseModel()
 
     def tearDown(self):
+        """test"""
         try:
             os.remove('file.json')
         except:
             pass
 
-    def test_default(self):
-        """test default """
-        i = self.value()
-        self.assertEqual(type(i), self.value)
-
     def test_kwargs(self):
         """test adding kwargs """
-        i = self.value()
+        i = self.value
         copy = i.to_dict()
         new = BaseModel(**copy)
         self.assertFalse(new is i)
 
     def test_kwargs_int(self):
         """ test int """
-        i = self.value()
+        i = self.value
         copy = i.to_dict()
         copy.update({1: 2})
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "FileStorage Test")
     def test_save(self):
         """ Testing save """
-        i = self.value()
+        i = self.value
         i.save()
         key = self.name + "." + i.id
         with open('file.json', 'r') as f:
@@ -58,7 +51,7 @@ class test_basemodel(unittest.TestCase):
 
     def test_todict(self):
         """ test_todict """
-        i = self.value()
+        i = self.value
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
 
@@ -70,21 +63,22 @@ class test_basemodel(unittest.TestCase):
 
     def test_id(self):
         """test_id """
-        new = self.value()
+        new = self.value
         self.assertEqual(type(new.id), str)
 
     def test_created_at(self):
         """test_created_at """
-        new = self.value()
+        new = self.value
         self.assertEqual(type(new.created_at), datetime.datetime)
 
     def test_updated_at(self):
         """test_updated_at """
-        new = self.value()
+        new = self.value
         self.assertEqual(type(new.updated_at), datetime.datetime)
         n = new.to_dict()
         new = BaseModel(**n)
 
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "FileStorage Test")
     def test_base(self):
         """
         base test

@@ -20,11 +20,12 @@ class DBStorage:
 
     classes = {
         "City": City, "User": User, "State": State,
-        "Amenity": Amenity, "Place": Place, "Review": Review
+        "Amenity": Amenity, "Place": Place, "Review": Review,
+        "BaseModel": BaseModel
     }
 
     def __init__(self):
-        """ overriting the constructor"""
+        """ overriding the constructor"""
         user = os.environ.get("HBNB_MYSQL_USER")
         password = os.environ.get("HBNB_MYSQL_PWD")
         host = os.environ.get("HBNB_MYSQL_HOST")
@@ -45,14 +46,17 @@ class DBStorage:
             if type(cls) is not str:
                 cls = cls.__name__
             rows = self.__session.query(self.classes[cls]).all()
+            result = {}
+            for row in rows:
+                key = cls+"."+row.id
+                result[key] = row
         else:
-            rows = []
-            for cls in self.classes.values():
-                rows.extend(self.__session.query(cls).all())
-        result = {}
-        for row in rows:
-            key = cls+"."+row.id
-            result[key] = row
+            result = {}
+            for name, cl in self.classes.items():
+                if name != "BaseModel":
+                    for row in self.__session.query(cl).all():
+                        key = name+"."+row.id
+                        result[key] = row
         return result
 
     def new(self, obj):
