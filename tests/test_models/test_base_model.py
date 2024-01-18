@@ -6,6 +6,7 @@ import datetime
 from uuid import UUID
 import json
 import os
+import pep8
 
 
 class test_basemodel(unittest.TestCase):
@@ -106,3 +107,9 @@ class test_basemodel(unittest.TestCase):
         my_old_updated_at = my_model.updated_at
         my_model.save()
         self.assertNotEqual(my_model.updated_at, my_old_updated_at)
+
+    def test_pep8_BaseModel(self):
+        """Testing for pep8"""
+        style = pep8.StyleGuide(quiet=True)
+        p = style.check_files(['models/base_model.py'])
+        self.assertEqual(p.total_errors, 0, "fix pep8")
