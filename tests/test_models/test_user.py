@@ -11,24 +11,30 @@ class test_User(test_basemodel):
         """ """
         super().__init__(*args, **kwargs)
         self.name = "User"
-        self.value = User
+        self.user = User(
+            first_name="David",
+            last_name="David",
+            email="David@eam.com",
+            password="P@sswssf",
+        )
 
     def test_first_name(self):
         """ """
-        new = self.value()
+        new = self.user
         self.assertEqual(type(new.first_name), str)
 
     def test_last_name(self):
         """ """
-        new = self.value()
+        new = self.user
         self.assertEqual(type(new.last_name), str)
 
     def test_email(self):
         """ """
-        new = self.value()
+        new = self.user
         self.assertEqual(type(new.email), str)
 
     def test_password(self):
         """ """
-        new = self.value()
+        new = self.user
+        print(new)
         self.assertEqual(type(new.password), str)
