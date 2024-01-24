@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ """
 import os
-from types import NoneType
 import unittest
 from models.city import City
 from models.state import State
@@ -25,16 +24,16 @@ class test_City(unittest.TestCase):
     def test_state_id(self):
         """ """
         new = self.value
-        self.assertEqual(type(new.state_id), NoneType
+        self.assertEqual(new.state_id, None
                          if os.getenv("HBNB_TYPE_STORAGE") == 'db'
-                         else str)
+                         else "")
 
     def test_name(self):
         """ """
         new = self.value
-        self.assertEqual(type(new.name), NoneType
+        self.assertEqual(type(new.name), None
                          if os.getenv("HBNB_TYPE_STORAGE") == 'db'
-                         else str)
+                         else "")
 
     def test_city_attributes(self):
         """test atters"""
