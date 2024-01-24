@@ -31,7 +31,7 @@ class test_City(unittest.TestCase):
     def test_name(self):
         """ """
         new = self.value
-        self.assertEqual(type(new.name), None
+        self.assertEqual(new.name, None
                          if os.getenv("HBNB_TYPE_STORAGE") == 'db'
                          else "")
 
