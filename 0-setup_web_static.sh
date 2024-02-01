@@ -14,6 +14,7 @@ echo "<html>
   </body>
 </html>" > /data/web_static/releases/test/index.html
 chown -R ubuntu:ubuntu /data/
+sudo chmod -R 755 /data/
 sed -i -e "0,/    }/ s#    }# }\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}\n#" /etc/nginx/sites-available/default
 nginx -t
 nginx -s reload
