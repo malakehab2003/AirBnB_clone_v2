@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # sets up web servers for the deployment of web_static
 # Create directories recursively if they don't exist
+apt-get update
 apt-get install -y nginx
 mkdir -p /data/web_static/releases/test/
 mkdir -p /data/web_static/shared/
