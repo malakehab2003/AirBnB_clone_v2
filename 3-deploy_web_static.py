@@ -15,6 +15,16 @@ env.user = 'ubuntu'
 env.key_filename = '~/.ssh/fabric'
 
 
+def deploy():
+    """
+    creates and distributes an archive to your web servers
+    """
+    path = do_pack()
+    if path is None:
+        return False
+    return do_deploy(path)
+
+
 def do_pack():
     """
     generates a .tgz archive from the contents of the web_static folder
