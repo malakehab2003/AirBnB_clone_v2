@@ -7,6 +7,7 @@ using the function do_pack
 """
 
 from datetime import datetime
+import os
 from fabric.api import local, put, run, env
 
 env.hosts = ['100.25.146.3', '34.207.120.217']
@@ -29,17 +30,22 @@ def do_deploy(archive_path):
     """
     distributes an archive to your web servers
     """
-    if not archive_path:
-        return False
+    # verificamos si el path existe
+    if os.path.exists(archive_path) is False:
+        return (False)
     result = put(archive_path, "/tmp/")
     if result.failed:
         return False
     name = archive_path.split("/")[-1].split(".")[0]
     result = run(
+        f"mkdir -p {archive_path} -C /data/web_static/releases/{name}")
+    if result.failed:
+        return False
+    result = run(
         f"tar -xvf {archive_path} -C /data/web_static/releases/{name}")
     if result.failed:
         return False
-    result = run(f"rm {archive_path}")
+    result = run(f"rm /tmp/{name}.tgz")
     if result.failed:
         return False
     result = run(
