@@ -46,7 +46,8 @@ def do_deploy(archive_path):
     if result.failed:
         return False
     result = run(
-        f"mv /data/web_static/releases/{name}/web_static/* /data/web_static/releases/{name}")
+        f"mv /data/web_static/releases/{name}/web_static/* \
+          /data/web_static/releases/{name}")
     if result.failed:
         return False
     result = run(f"rm /tmp/{name}.tgz")
