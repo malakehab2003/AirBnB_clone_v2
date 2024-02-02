@@ -33,6 +33,7 @@ def do_deploy(archive_path):
     # verificamos si el path existe
     if os.path.exists(archive_path) is False:
         return (False)
+    run("mkdir -p /tmp/")
     result = put(archive_path, "/tmp/")
     if result.failed:
         return False
