@@ -41,11 +41,12 @@ def do_deploy(archive_path):
         f"mkdir -p /data/web_static/releases/{name}")
     if result.failed:
         return False
-
-
-
     result = run(
         f"tar -xvf /tmp/{name}.tgz -C /data/web_static/releases/{name}")
+    if result.failed:
+        return False
+    result = run(
+        f"mv /data/web_static/releases/{name}/web_static/* /data/web_static/releases/{name}")
     if result.failed:
         return False
     result = run(f"rm /tmp/{name}.tgz")
