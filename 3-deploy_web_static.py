@@ -35,7 +35,7 @@ def do_pack():
     result = local("tar -cvzf versions/{} web_static".format(name))
     if result.failed:
         return None
-    return local(f'versions/{name}')
+    return f'versions/{name}'
 
 
 def do_deploy(archive_path):
