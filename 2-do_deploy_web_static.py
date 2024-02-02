@@ -11,6 +11,8 @@ import os
 from fabric.api import local, put, run, env
 
 env.hosts = ['100.25.146.3', '34.207.120.217']
+env.user = 'ubuntu'
+env.key_filename = '~/.ssh/fabric'
 
 
 def do_pack():
