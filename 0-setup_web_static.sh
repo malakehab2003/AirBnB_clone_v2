@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 # update package lists
-sudo apt-get -y update
-
 # check if nginx not installed and install it
 if ! command -v nginx &> /dev/null
 then
+	sudo apt-get -y update
         sudo apt-get -y install nginx
 fi
 
