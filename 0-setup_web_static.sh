@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # update package lists
 # check if nginx not installed and install it
-if ! command -v nginx &> /dev/null
+if [ ! -x /usr/sbin/nginx ]
 then
 	sudo apt-get -y update
         sudo apt-get -y install nginx
@@ -22,7 +22,7 @@ sudo echo "<html>
 </html>" > "/data/web_static/releases/test/index.html"
 
 # remove sympolic link if exists
-if [ -L "/data/web_static/current" ];
+if [ -L "/data/web_static/current" ]
 then
         sudo rm /data/web_static/current
 fi
