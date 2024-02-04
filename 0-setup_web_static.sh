@@ -13,6 +13,7 @@ sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
 
 # create a html file
+touch /data/web_static/releases/test/index.html
 sudo echo "<html>
   <head>
   </head>
