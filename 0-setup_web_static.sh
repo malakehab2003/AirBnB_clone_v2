@@ -26,7 +26,7 @@ sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # change owner to ubuntu and group recursively
 sudo chown -R ubuntu:ubuntu /data/
-sudo chmod -R 777 /data/
+sudo chmod -R 755 /data/
 
 # Check if alias already exists, replace it; otherwise, add the alias
 sudo sed -i '48 i \\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
