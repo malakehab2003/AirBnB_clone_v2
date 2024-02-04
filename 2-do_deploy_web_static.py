@@ -5,7 +5,7 @@ distributes an archive to your web servers
 """
 
 from fabric.api import env, put, run, local
-from os.path import exists
+import os
 from datetime import datetime
 
 env.hosts = ['100.25.3.157', '3.84.255.36']
@@ -34,25 +34,22 @@ def do_pack():
 
 def do_deploy(archive_path):
     """Distributes an archive to web servers."""
-    if not exists(archive_path):
-        return False
-    try:
-        put(archive_path, '/tmp/')
-        filename = archive_path.split('/')[-1]
-        folder_name = filename.replace('.tgz', '').split('_')[-1]
-        release_path = '/data/web_static/releases/{}'.format(folder_name)
+    if os.path.exists(archive_path):
+        archived_file = archive_path[9:]
+        newest_version = "/data/web_static/releases/" + archived_file[:-4]
+        archived_file = "/tmp/" + archived_file
+        put(archive_path, "/tmp/")
+        run("sudo mkdir -p {}".format(newest_version))
+        run("sudo tar -xzf {} -C {}/".format(archived_file,
+                                             newest_version))
+        run("sudo rm {}".format(archived_file))
+        run("sudo mv {}/web_static/* {}".format(newest_version,
+                                                newest_version))
+        run("sudo rm -rf {}/web_static".format(newest_version))
+        run("sudo rm -rf /data/web_static/current")
+        run("sudo ln -s {} /data/web_static/current".format(newest_version))
 
-        run('mkdir -p {}'.format(release_path))
-        run('tar -xzf /tmp/{} -C {}'.format(filename, release_path))
-
-        # Delete the archive from the web server
-        run('rm /tmp/{}'.format(filename))
-
-        # Delete the symbolic link /data/web_static/current
-        run('rm -rf /data/web_static/current')
-
-        # Create a new symbolic link linked to the new version
-        run('ln -s {} /data/web_static/current'.format(release_path))
+        print("New version deployed!")
         return True
-    except Exception as e:
-        return False
+
+    return False
