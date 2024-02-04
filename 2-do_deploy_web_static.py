@@ -16,19 +16,13 @@ def do_pack():
     """
     Generates a .tgz archive from the contents of the web_static folder.
     """
-    # Create the versions folder if it doesn't exist
     local("mkdir -p versions")
+    date = datetime.now().strftime("%Y%m%d%H%M%S")
+    archived_f_path = "versions/web_static_{}.tgz".format(date)
+    t_gzip_archive = local("tar -cvzf {} web_static".format(archived_f_path))
 
-    # Create the archive name based on current timestamp
-    timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S")
-    archive_name = "web_static_{}.tgz".format(timestamp)
-
-    # Compress the web_static folder into the archive
-    result = local("tar -cvzf versions/{} web_static".format(archive_name))
-
-    # Check if the archive has been correctly generated
-    if result.succeeded:
-        return f'versions/{archive_name}'
+    if t_gzip_archive.succeeded:
+        return archived_f_path
     else:
         return None
 
