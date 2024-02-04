@@ -1,29 +1,43 @@
 #!/usr/bin/env bash
-# Bash script that sets up your web servers for the deployment of web_static
-# Install Nginx if it not already installed
-if [ ! -x /usr/sbin/nginx ]
+# update package lists
+sudo apt-get -y update
+
+# check if nginx not installed and install it
+if ! command -v nginx &> /dev/null
 then
-    sudo apt-get -y update
-    sudo apt-get -y install nginx
+        sudo apt-get -y install nginx
 fi
-# Create the folders
+
+# create directories if not exists
 sudo mkdir -p /data/web_static/releases/test/
 sudo mkdir -p /data/web_static/shared/
-# Create a fake HTML file
-touch /data/web_static/releases/test/index.html
-echo "<html>
+
+# create a html file
+sudo echo "<html>
   <head>
   </head>
   <body>
-    <h1>Testing Nginx configuration <h1>
+    Holberton School
   </body>
-</html>" > /data/web_static/releases/test/index.html
-# Create a symbolic link /data/web_static/current linked to the /data/web_static/releases/test/ folder
-sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
-# Give ownership of the /data/ folder to the ubuntu user AND group 
-sudo chown -R ubuntu:ubuntu /data
-sudo chmod -R 755 /data/
-# Update the Nginx configuration to serve the content of /data/web_static/current/ to hbnb_static
+</html>" > "/data/web_static/releases/test/index.html"
+
+# remove sympolic link if exists
+if [ -L "/data/web_static/current" ];
+then
+        sudo rm /data/web_static/current
+fi
+
+# create new sympolic link
+sudo ln -s /data/web_static/releases/test/ /data/web_static/current
+
+# change owner to ubuntu and group recursively
+sudo chown -R ubuntu:ubuntu /data/
+sudo chmod -R 777 /data/
+
+# Check if alias already exists, replace it; otherwise, add the alias
 sudo sed -i '48 i \\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
-# Restart nginx
+
+# Restart Nginx
 sudo service nginx restart
+
+exit 0
