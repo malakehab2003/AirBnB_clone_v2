@@ -28,7 +28,7 @@ then
 fi
 
 # create new sympolic link
-sudo ln -s /data/web_static/releases/test/ /data/web_static/current
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # change owner to ubuntu and group recursively
 sudo chown -R ubuntu:ubuntu /data/
