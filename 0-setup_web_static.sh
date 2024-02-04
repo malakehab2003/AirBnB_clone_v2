@@ -19,7 +19,7 @@ sudo echo "<html>
   <body>
     Holberton School
   </body>
-</html>" > /data/web_static/releases/test/index.html
+</html>" | sudo tee /data/web_static/releases/test/index.html
 
 # create new sympolic link
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
