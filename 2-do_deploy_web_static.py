@@ -28,34 +28,31 @@ def do_pack():
 
 def do_deploy(archive_path):
     """Distributes an archive to web servers."""
-    if os.path.exists(archive_path) is False:
-        return (False)
-    result = put(archive_path, "/tmp/")
-    if result.failed:
+    if not os.path.exists(archive_path):
         return False
-    name = archive_path.split("/")[-1].split(".")[0]
-    result = run(
-        f"mkdir -p /data/web_static/releases/{name}")
-    if result.failed:
+
+    try:
+        # Upload the archive to /tmp/ on the web server
+        put(archive_path, '/tmp/')
+
+        # Extract archive to /data/web_static/releases/<archive filename without extension>/
+        filename = archive_path.split('/')[-1]
+        folder_name = filename.replace('.tgz', '').split('_')[-1]
+        release_path = '/data/web_static/releases/{}'.format(folder_name)
+
+        run('mkdir -p {}'.format(release_path))
+        run('tar -xzf /tmp/{} -C {}'.format(filename, release_path))
+
+        # Delete the archive from the web server
+        run('rm /tmp/{}'.format(filename))
+
+        # Delete the symbolic link /data/web_static/current
+        run('rm -rf /data/web_static/current')
+
+        # Create a new symbolic link linked to the new version
+        run('ln -s {} /data/web_static/current'.format(release_path))
+
+        print('New version deployed!')
+        return True
+    except Exception as e:
         return False
-    result = run(
-        f"tar -xvf /tmp/{name}.tgz -C /data/web_static/releases/{name}")
-    if result.failed:
-        return False
-    result = run(
-        f"mv /data/web_static/releases/{name}/web_static/* \
-          /data/web_static/releases/{name}")
-    if result.failed:
-        return False
-    result = run(f"rm /tmp/{name}.tgz")
-    if result.failed:
-        return False
-    result = run(
-        f"rm /data/web_static/current")
-    if result.failed:
-        return False
-    result = run(
-        f"ln -sf /data/web_static/releases/{name} /data/web_static/current")
-    if result.failed:
-        return False
-    return True
