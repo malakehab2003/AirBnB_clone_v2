@@ -39,5 +39,3 @@ sudo sed -i '48 i \\tlocation /hbnb_static/ {\n\t\talias /data/web_static/curren
 
 # Restart Nginx
 sudo service nginx restart
-
-exit 0
