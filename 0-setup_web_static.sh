@@ -19,13 +19,7 @@ sudo echo "<html>
   <body>
     Holberton School
   </body>
-</html>" > "/data/web_static/releases/test/index.html"
-
-# remove sympolic link if exists
-if [ -L "/data/web_static/current" ]
-then
-        sudo rm /data/web_static/current
-fi
+</html>" > /data/web_static/releases/test/index.html
 
 # create new sympolic link
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
