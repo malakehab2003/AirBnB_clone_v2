@@ -1,12 +1,10 @@
-#!/usr/bin/python3
 """
 make a fabric do pack function
 """
-
-
 from fabric.api import local
 from datetime import datetime
 import os
+
 
 def do_pack():
     """
