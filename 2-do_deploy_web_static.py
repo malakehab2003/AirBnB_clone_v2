@@ -1,66 +1,58 @@
 #!/usr/bin/python3
+
 """
-a Fabric script that generates a .tgz archive
-from the contents of the web_static folder
-of your AirBnB Clone repo,
-using the function do_pack
+distributes an archive to your web servers
 """
 
+from fabric.api import env, put, run, local
+from os.path import exists
 from datetime import datetime
-import os
-from fabric.api import local, put, run, env
 
-env.hosts = ['100.25.146.3', '34.207.120.217']
+env.hosts = ['100.25.3.157', '3.84.255.36']
 env.user = 'ubuntu'
-env.key_filename = '~/.ssh/fabric'
-
+env.key_filename = '~/.ssh/id_rsa'
 
 def do_pack():
     """
-    generates a .tgz archive from the contents of the web_static folder
+    Generates a .tgz archive from the contents of the web_static folder.
     """
-    date = datetime.strftime(datetime.now(), "%Y%m%d%H%M%S")
-    name = f"web_static_{date}.tgz"
+    # Create the versions folder if it doesn't exist
     local("mkdir -p versions")
-    result = local("tar -cvzf versions/{} web_static".format(name))
-    if result.failed:
-        return None
-    return local(f'versions/{name}')
 
+    # Create the archive name based on current timestamp
+    timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    archive_name = "web_static_{}.tgz".format(timestamp)
+
+    # Compress the web_static folder into the archive
+    result = local("tar -cvzf versions/{} web_static".format(archive_name))
+
+    # Check if the archive has been correctly generated
+    if result.succeeded:
+        return f'versions/{archive_name}'
+    else:
+        return None
 
 def do_deploy(archive_path):
-    """
-    distributes an archive to your web servers
-    """
-    # verificamos si el path existe
-    if os.path.exists(archive_path) is False:
-        return (False)
-    result = put(archive_path, "/tmp/")
-    if result.failed:
+    """Distributes an archive to web servers."""
+    if not exists(archive_path):
         return False
-    name = archive_path.split("/")[-1].split(".")[0]
-    result = run(
-        f"mkdir -p /data/web_static/releases/{name}")
-    if result.failed:
+    try:
+        put(archive_path, '/tmp/')
+        filename = archive_path.split('/')[-1]
+        folder_name = filename.replace('.tgz', '').split('_')[-1]
+        release_path = '/data/web_static/releases/{}'.format(folder_name)
+
+        run('mkdir -p {}'.format(release_path))
+        run('tar -xzf /tmp/{} -C {}'.format(filename, release_path))
+
+        # Delete the archive from the web server
+        run('rm /tmp/{}'.format(filename))
+
+        # Delete the symbolic link /data/web_static/current
+        run('rm -rf /data/web_static/current')
+
+        # Create a new symbolic link linked to the new version
+        run('ln -s {} /data/web_static/current'.format(release_path))
+        return True
+    except Exception as e:
         return False
-    result = run(
-        f"tar -xvf /tmp/{name}.tgz -C /data/web_static/releases/{name}")
-    if result.failed:
-        return False
-    result = run(
-        f"mv /data/web_static/releases/{name}/web_static/* \
-          /data/web_static/releases/{name}")
-    if result.failed:
-        return False
-    result = run(f"rm /tmp/{name}.tgz")
-    if result.failed:
-        return False
-    result = run(
-        f"rm /data/web_static/current")
-    if result.failed:
-        return False
-    result = run(
-        f"ln -sf /data/web_static/releases/{name} /data/web_static/current")
-    if result.failed:
-        return False
-    return True
