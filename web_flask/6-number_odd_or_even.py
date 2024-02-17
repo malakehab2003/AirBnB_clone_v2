@@ -47,9 +47,11 @@ def number_of_template(n):
 def even_or_odd(n):
     """say n if even or odd"""
     if int(n) % 2 == 0:
-        return render_template("6-number_odd_or_even.html", number="Number: {} is even".format(n))
+        return render_template("6-number_odd_or_even.html",
+                               number="Number: {} is even".format(n))
     else:
-        return render_template("6-number_odd_or_even.html", number="Number: {} is odd".format(n))
+        return render_template("6-number_odd_or_even.html",
+                               number="Number: {} is odd".format(n))
 
 
 if __name__ == "__main__":
