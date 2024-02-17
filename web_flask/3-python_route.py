@@ -23,11 +23,13 @@ def c(text):
     """say c and text"""
     return "C {}".format(text.replace("_", " "))
 
+
 @app.route("/python/", strict_slashes=False, defaults={'text': 'is cool'})
 @app.route("/python/<text>", strict_slashes=False)
 def python(text):
     """say python and text"""
     return "Python {}".format(text.replace("_", " "))
+
 
 if __name__ == "__main__":
     """if module run as main"""
