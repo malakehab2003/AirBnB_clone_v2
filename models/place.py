@@ -20,11 +20,11 @@ class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)\
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ""
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
     cities = relationship("City") \
         if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)\
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db' else ""
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
     user = relationship("User")\
         if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
     name = Column(String(128), nullable=False)\
