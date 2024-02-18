@@ -14,17 +14,18 @@ class State(BaseModel, Base):
     cities = relationship("City", cascade="delete", back_populates="state")\
         if os.getenv('HBNB_TYPE_STORAGE') == 'db' else None
 
-    @property
-    def cities(self):
-        """
-        cities getter
-        """
-        from models import storage
-        from models.city import City
-        cities = list(
-            map(lambda i: i[0],
-                filter(lambda i: i.state_id ==
-                       self.id, storage.all(City).values())
-                )
-        )
-        return cities
+    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def cities(self):
+            """
+            cities getter
+            """
+            from models import storage
+            from models.city import City
+            cities = list(
+                map(lambda i: i,
+                    filter(lambda i: i.state_id ==
+                           self.id, storage.all(City).values())
+                    )
+            )
+            return cities
